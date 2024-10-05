@@ -1,0 +1,170 @@
+[
+  [
+    {
+      "strategy": "zeroShot",
+      "question": "What is the name of the user that worked the most trips that started in July 2023?",
+      "completionSQL": "```sql\nSELECT u.full_name\nFROM public.user u\nJOIN public.trip_to_user_to_role tur ON u.id = tur.user_id\nJOIN public.trip t ON tur.trip_id = t.id\nWHERE t.start_date >= '2023-07-01' AND t.start_date < '2023-08-01'\nGROUP BY u.id, u.full_name\nORDER BY COUNT(t.id) DESC\nLIMIT 1;\n```",
+      "sql": " SELECT u.full_name FROM public.user u JOIN public.trip_to_user_to_role tur ON u.id = tur.user_id JOIN public.trip t ON tur.trip_id = t.id WHERE t.start_date >= '2023-07-01' AND t.start_date < '2023-08-01' GROUP BY u.id, u.full_name ORDER BY COUNT(t.id) DESC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "full_name": "Kevin Mckinnon"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"What is the name of the user that worked the most trips that started in July 2023?\" and the response from the database was \"[{\"full_name\":\"Kevin Mckinnon\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The user who worked the most trips starting in July 2023 is Kevin Mckinnon.",
+      "error": "none"
+    },
+    {
+      "strategy": "zeroShot",
+      "question": "Which company has the most users?",
+      "completionSQL": "```sql\nSELECT company_id, COUNT(*) AS user_count\nFROM public.\"user\"\nGROUP BY company_id\nORDER BY user_count DESC\nLIMIT 1;\n```",
+      "sql": " SELECT company_id, COUNT(*) AS user_count FROM public.\"user\" GROUP BY company_id ORDER BY user_count DESC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "company_id": "eb71be6d-e279-48af-93c1-b014eb70d65d",
+          "user_count": "72"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"Which company has the most users?\" and the response from the database was \"[{\"company_id\":\"eb71be6d-e279-48af-93c1-b014eb70d65d\",\"user_count\":\"72\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The company with the most users has 72 users.",
+      "error": "none"
+    },
+    {
+      "strategy": "zeroShot",
+      "question": "Which inventory item has been scheduled the most?",
+      "completionSQL": "```sql\nSELECT item_id, COUNT(*) as scheduled_count\nFROM public.trip_to_item\nGROUP BY item_id\nORDER BY scheduled_count DESC\nLIMIT 1;\n```",
+      "sql": " SELECT item_id, COUNT(*) as scheduled_count FROM public.trip_to_item GROUP BY item_id ORDER BY scheduled_count DESC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "item_id": "4ddb556a-77c5-45c9-b61c-6451db8f68e4",
+          "scheduled_count": "7"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"Which inventory item has been scheduled the most?\" and the response from the database was \"[{\"item_id\":\"4ddb556a-77c5-45c9-b61c-6451db8f68e4\",\"scheduled_count\":\"7\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The inventory item with the most schedules is the one with ID 4ddb556a-77c5-45c9-b61c-6451db8f68e4, scheduled 7 times.",
+      "error": "none"
+    },
+    {
+      "strategy": "zeroShot",
+      "question": "What is the name of the user that has the most roles?",
+      "completionSQL": "```sql\nSELECT u.full_name\nFROM public.\"user\" u\nJOIN public.\"user_to_role\" ur ON u.id = ur.user_id\nGROUP BY u.id\nORDER BY COUNT(ur.role_id) DESC\nLIMIT 1;\n```",
+      "sql": " SELECT u.full_name FROM public.\"user\" u JOIN public.\"user_to_role\" ur ON u.id = ur.user_id GROUP BY u.id ORDER BY COUNT(ur.role_id) DESC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "full_name": "Erik Weiseth"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"What is the name of the user that has the most roles?\" and the response from the database was \"[{\"full_name\":\"Erik Weiseth\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The user with the most roles is Erik Weiseth.",
+      "error": "none"
+    },
+    {
+      "strategy": "zeroShot",
+      "question": "What is the name of the user that has worked the least?",
+      "completionSQL": "```sql\nSELECT full_name\nFROM public.\"user\"\nORDER BY hire_date ASC\nLIMIT 1;\n```",
+      "sql": " SELECT full_name FROM public.\"user\" ORDER BY hire_date ASC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "full_name": "Carter Lloyd"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"What is the name of the user that has worked the least?\" and the response from the database was \"[{\"full_name\":\"Carter Lloyd\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The user who has worked the least is Carter Lloyd.",
+      "error": "none"
+    },
+    {
+      "strategy": "zeroShot",
+      "question": "What is the name of the user that is from North Carolina?",
+      "completionSQL": "```sql\nSELECT full_name FROM public.\"user\" WHERE company_id IN (\n    SELECT id FROM public.\"company\" WHERE billing_address ->> 'state' = 'North Carolina'\n);\n```",
+      "sql": " SELECT full_name FROM public.\"user\" WHERE company_id IN (     SELECT id FROM public.\"company\" WHERE billing_address ->> 'state' = 'North Carolina' ); ",
+      "queryRawResponse": [],
+      "friendlyPrompt": "I asked a question \"What is the name of the user that is from North Carolina?\" and the response from the database was \"[]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "It looks like there are no users from North Carolina in the database.",
+      "error": "none"
+    }
+  ],
+  [
+    {
+      "strategy": "Single domain few shot",
+      "question": "What is the name of the user that worked the most trips that started in July 2023?",
+      "completionSQL": "```sql\nSELECT u.full_name \nFROM \"public\".\"user\" u\nJOIN \"public\".\"trip_to_user_to_role\" tu ON u.id = tu.user_id\nJOIN \"public\".\"trip\" t ON tu.trip_id = t.id\nWHERE t.start_date >= '2023-07-01' AND t.start_date < '2023-08-01'\nGROUP BY u.full_name\nORDER BY COUNT(t.id) DESC\nLIMIT 1;\n```",
+      "sql": " SELECT u.full_name  FROM \"public\".\"user\" u JOIN \"public\".\"trip_to_user_to_role\" tu ON u.id = tu.user_id JOIN \"public\".\"trip\" t ON tu.trip_id = t.id WHERE t.start_date >= '2023-07-01' AND t.start_date < '2023-08-01' GROUP BY u.full_name ORDER BY COUNT(t.id) DESC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "full_name": "Kevin Mckinnon"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"What is the name of the user that worked the most trips that started in July 2023?\" and the response from the database was \"[{\"full_name\":\"Kevin Mckinnon\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The user who worked the most trips starting in July 2023 is Kevin Mckinnon.",
+      "error": "none"
+    },
+    {
+      "strategy": "Single domain few shot",
+      "question": "Which company has the most users?",
+      "completionSQL": "```sql\nSELECT company_id, COUNT(*) AS user_count\nFROM public.user\nGROUP BY company_id\nORDER BY user_count DESC\nLIMIT 1;\n```",
+      "sql": " SELECT company_id, COUNT(*) AS user_count FROM public.user GROUP BY company_id ORDER BY user_count DESC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "company_id": "eb71be6d-e279-48af-93c1-b014eb70d65d",
+          "user_count": "72"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"Which company has the most users?\" and the response from the database was \"[{\"company_id\":\"eb71be6d-e279-48af-93c1-b014eb70d65d\",\"user_count\":\"72\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The company with the most users has 72 users.",
+      "error": "none"
+    },
+    {
+      "strategy": "Single domain few shot",
+      "question": "Which inventory item has been scheduled the most?",
+      "completionSQL": "```sql\nSELECT item_id, COUNT(*) AS scheduled_count\nFROM trip_to_item\nGROUP BY item_id\nORDER BY scheduled_count DESC\nLIMIT 1;\n```",
+      "sql": " SELECT item_id, COUNT(*) AS scheduled_count FROM trip_to_item GROUP BY item_id ORDER BY scheduled_count DESC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "item_id": "4ddb556a-77c5-45c9-b61c-6451db8f68e4",
+          "scheduled_count": "7"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"Which inventory item has been scheduled the most?\" and the response from the database was \"[{\"item_id\":\"4ddb556a-77c5-45c9-b61c-6451db8f68e4\",\"scheduled_count\":\"7\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The inventory item with ID \"4ddb556a-77c5-45c9-b61c-6451db8f68e4\" has been scheduled the most, with a total of 7 schedules.",
+      "error": "none"
+    },
+    {
+      "strategy": "Single domain few shot",
+      "question": "What is the name of the user that has the most roles?",
+      "completionSQL": "```sql\nSELECT u.full_name\nFROM public.user u\nJOIN public.user_to_role ur ON u.id = ur.user_id\nGROUP BY u.id, u.full_name\nORDER BY COUNT(ur.role_id) DESC\nLIMIT 1;\n```",
+      "sql": " SELECT u.full_name FROM public.user u JOIN public.user_to_role ur ON u.id = ur.user_id GROUP BY u.id, u.full_name ORDER BY COUNT(ur.role_id) DESC LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "full_name": "Erik Weiseth"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"What is the name of the user that has the most roles?\" and the response from the database was \"[{\"full_name\":\"Erik Weiseth\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The user with the most roles is Erik Weiseth.",
+      "error": "none"
+    },
+    {
+      "strategy": "Single domain few shot",
+      "question": "What is the name of the user that has worked the least?",
+      "completionSQL": "```sql\nSELECT full_name \nFROM public.\"user\" \nORDER BY hire_date ASC \nLIMIT 1;\n```",
+      "sql": " SELECT full_name  FROM public.\"user\"  ORDER BY hire_date ASC  LIMIT 1; ",
+      "queryRawResponse": [
+        {
+          "full_name": "Carter Lloyd"
+        }
+      ],
+      "friendlyPrompt": "I asked a question \"What is the name of the user that has worked the least?\" and the response from the database was \"[{\"full_name\":\"Carter Lloyd\"}]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "The user who has worked the least is Carter Lloyd.",
+      "error": "none"
+    },
+    {
+      "strategy": "Single domain few shot",
+      "question": "What is the name of the user that is from North Carolina?",
+      "completionSQL": "```sql\nSELECT full_name FROM \"public\".\"user\" WHERE phone_number ILIKE '%910%' OR phone_number ILIKE '%919%';\n```",
+      "sql": " SELECT full_name FROM \"public\".\"user\" WHERE phone_number ILIKE '%910%' OR phone_number ILIKE '%919%'; ",
+      "queryRawResponse": [],
+      "friendlyPrompt": "I asked a question \"What is the name of the user that is from North Carolina?\" and the response from the database was \"[]\" Please, just give a concise response in a more friendly way? Please do not give any other suggests or chatter.",
+      "friendlyResponse": "It looks like there are no users from North Carolina in the database.",
+      "error": "none"
+    }
+  ]
+]
